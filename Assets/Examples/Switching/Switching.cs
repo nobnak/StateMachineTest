@@ -13,19 +13,19 @@ public class Switching : MonoBehaviour {
 
 	void Awake() {
         _fsmSignal = new FSM<SignalEnum> (this);
-        _fsmSignal.Ensure (SignalEnum.Green).SetEnter ((f) => { 
+        _fsmSignal.Ensure (SignalEnum.Green).Enter ((f) => { 
             green.SetActive (true);
             red.SetActive (false);
             _timer = 1f;
-        }).SetUpdate ((f) => {
+        }).Update ((f) => {
             if ((_timer -= Time.deltaTime) <= 0f)
                 f.Goto(SignalEnum.Red);            
         });
-        _fsmSignal.Ensure (SignalEnum.Red).SetEnter ((f) => {
+        _fsmSignal.Ensure (SignalEnum.Red).Enter ((f) => {
             green.SetActive (false);
             red.SetActive (true);
             _timer = 1f;
-        }).SetUpdate ((f) => {
+        }).Update ((f) => {
             if ((_timer -= Time.deltaTime) <= 0f)
                 f.Goto(SignalEnum.Green);
         });
