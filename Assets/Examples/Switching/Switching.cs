@@ -16,7 +16,7 @@ public class Switching : MonoBehaviour {
         _fsmSignal = new FSM<SignalEnum> (this);
 
         _fsmSignal.State (SignalEnum.Green).Enter ((f) => { 
-            ToggleColor(SignalEnum.Green);
+            ToggleColor(f.Current);
             _timer = 1f;
         }).Update ((f) => {
             if ((_timer -= Time.deltaTime) <= 0f)
@@ -24,7 +24,7 @@ public class Switching : MonoBehaviour {
         });
 
         _fsmSignal.State (SignalEnum.Red).Enter ((f) => {
-            ToggleColor (SignalEnum.Red);
+            ToggleColor (f.Current);
             _timer = 1f;
         }).Update ((f) => {
             if ((_timer -= Time.deltaTime) <= 0f)
@@ -32,7 +32,7 @@ public class Switching : MonoBehaviour {
         });
 
         _fsmSignal.State (SignalEnum.Blue).Enter ((f) => {
-            ToggleColor (SignalEnum.Blue);
+            ToggleColor (f.Current);
             _timer = 1f;
         }).Update ((f) => {
             if ((_timer -= Time.deltaTime) <= 0f)
