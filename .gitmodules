@@ -1,0 +1,3 @@
+[submodule "Assets/Packages/StateMachine"]
+	path = Assets/Packages/StateMachine
+	url = https://github.com/nobnak/StateMachine.git
