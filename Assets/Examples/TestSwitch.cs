@@ -51,7 +51,12 @@ public class TestSwitch : MonoBehaviour {
             }
         });
 
-        if (!fsm.Change(StateEnum.Init))
+		fsm.Wire(StateEnum.Init, StateEnum.Started)
+			.Wire(StateEnum.Processing)
+			.Wire(StateEnum.Finished)
+			.Wire(StateEnum.Init);
+
+		if (!fsm.Change(StateEnum.Init))
             Debug.LogError($"Somthing wrong");
     }
     private void Update() {
