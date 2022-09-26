@@ -16,7 +16,7 @@ public class TestSwitch : MonoBehaviour {
 
     #region unity
     private void OnEnable() {
-        win_rect = new Rect(10, 10, 100, 100);
+        win_rect = new Rect(10, 10, 10, 10);
         fsm = new StateMachine<StateEnum>();
 
         fsm.State(StateEnum.Init).Update(() => {
@@ -50,10 +50,9 @@ public class TestSwitch : MonoBehaviour {
                 fsm.Change(StateEnum.Init);
             }
         });
-        var cond = fsm.CurrState != null 
-            && fsm.WireMap.TryGetValue((fsm.CurrState.Target, StateEnum.Init), out var wire);
+
         if (!fsm.Change(StateEnum.Init))
-            Debug.LogError($"Somthing wrong: condition={cond}");
+            Debug.LogError($"Somthing wrong");
     }
     private void Update() {
         fsm.Update();
@@ -66,6 +65,7 @@ public class TestSwitch : MonoBehaviour {
     #region member
     void Window(int id) {
         using (new GUILayout.VerticalScope()) {
+            GUI.enabled = fsm.CurrState == StateEnum.Init;
             clicked = GUILayout.Button("Start");
         }
         GUI.DragWindow();
