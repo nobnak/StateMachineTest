@@ -1,5 +1,4 @@
-using StateMashineSys;
-using System.Collections;
+using MinimalStateMashine;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -21,7 +20,7 @@ public class TestSwitch : MonoBehaviour {
 
         fsm.State(StateEnum.Init).Update(() => {
             if (clicked)
-                fsm.Change(StateEnum.Started);
+                fsm.Transit(StateEnum.Started);
             clicked = false;
         });
 
@@ -29,7 +28,7 @@ public class TestSwitch : MonoBehaviour {
             start_time = Time.time;
             foreach (var r in link.cubes)
                 r.enabled = false;
-        }).Update(() => fsm.Change(StateEnum.Processing));
+        }).Update(() => fsm.Transit(StateEnum.Processing));
 
         fsm.State(StateEnum.Processing).Update(() => {
             var elapsed = Time.time - start_time;
@@ -37,7 +36,7 @@ public class TestSwitch : MonoBehaviour {
             for (var i = 0; i < link.cubes.Count; i++)
                 link.cubes[i].enabled = (i == active_index);
             if (active_index >= link.cubes.Count)
-                fsm.Change(StateEnum.Finished);
+                fsm.Transit(StateEnum.Finished);
         });
 
         fsm.State(StateEnum.Finished).Enter(() => {
@@ -47,7 +46,7 @@ public class TestSwitch : MonoBehaviour {
             var elapsed = Time.time - start_time;
             if (elapsed > 1f) {
                 foreach (var r in link.cubes) r.enabled = false;
-                fsm.Change(StateEnum.Init);
+                fsm.Transit(StateEnum.Init);
             }
         });
 
@@ -56,7 +55,7 @@ public class TestSwitch : MonoBehaviour {
 			.Wire(StateEnum.Finished)
 			.Wire(StateEnum.Init);
 
-		if (!fsm.Change(StateEnum.Init))
+		if (!fsm.Transit(StateEnum.Init))
             Debug.LogError($"Somthing wrong");
     }
     private void Update() {
